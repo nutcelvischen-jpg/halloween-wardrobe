@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halloween Wardrobe — 萬聖節換裝室</title>
+<style>
+:root{--paper:#eeeae0;--ink:#272724;--muted:#615f58;--line:#c4bfb3;--accent:#925536;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+::selection{background:#d9b95c;color:var(--ink)}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+header{max-width:1320px;margin:auto;padding:28px 32px 18px;display:flex;align-items:baseline;justify-content:space-between;gap:20px}
+h1{font-size:25px;font-weight:normal;letter-spacing:-.025em;margin:0}h1 em{color:var(--accent)}header p{margin:0;color:var(--muted);font-size:14px;font-style:italic}
+main{max-width:1320px;margin:auto;padding:0 24px 30px}.gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:12px;row-gap:25px}
+figure{margin:0;position:relative;min-width:0}.portrait{display:block;width:100%;padding:0;background:none;border:0;cursor:grab;touch-action:pan-y;border-radius:0;position:relative}.portrait:active{cursor:grabbing}
+.portrait svg{width:100%;height:auto;display:block;overflow:visible;pointer-events:none}.portrait .head{transform-box:view-box;transform-origin:0 0}
+.portrait .eyes{transform-box:fill-box;transform-origin:center;animation:blink 6.3s infinite;animation-delay:var(--delay)}
+figcaption{text-align:center;padding:9px 0 3px}figcaption span{font-size:15px;display:inline-block;border-bottom:1px solid transparent;padding-bottom:5px}.selected figcaption span{border-color:var(--accent);color:var(--accent)}
+.selected::after{content:'';position:absolute;top:4px;right:12px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.character{transform-origin:200px 480px}.cape{transform-origin:200px 350px}
+.wave .character{animation:wave .85s ease-in-out both}.fly .character{animation:fly 1.8s ease-in-out both}.fly .cape{animation:cape .3s ease-in-out alternate 6}.power .character{animation:power .6s ease-out}.assemble .character{animation:assemble .6s ease-out both}
+.paused .eyes{animation-play-state:paused}.paused .head{transition:none}
+.portrait .brows{transition:transform .4s ease-out}
+.portrait .headgear{opacity:0;transform:translateY(-12px) scale(.98);transform-origin:200px 210px;transition:opacity .25s ease,transform .55s ease;pointer-events:none}
+.equipped .headgear{opacity:1;transform:translateY(0) scale(1)}
+.helmet-eyes{transform-box:fill-box;transform-origin:center;transition:transform .35s ease}
+.surprised .helmet-eyes{transform:scaleY(1.12)}
+.paused .headgear{transition:none}
+@media(prefers-reduced-motion:reduce){.portrait .headgear,.helmet-eyes{transition:none}}
+.surprised .brows{transform:translateY(-11px)}
+.surprised .eyes{animation:none;transform:scaleY(1.35)}
+.surprised .eyes > path{opacity:0}
+.page-hidden .ghost-flight,.page-hidden .ghost-art,.page-hidden .ghost-sparkles,.page-hidden .eyes{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.portrait .brows{transition:none}}
+footer{border-top:1px solid var(--line);padding:15px 32px 22px;max-width:1256px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:15px 25px}
+.selection{min-width:200px;flex:1}.selection strong{display:block;font-size:16px;font-weight:normal}.selection p{margin:5px 0 0;font-size:13px;color:var(--muted);font-style:italic}
+.controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.controls button{border:1px solid transparent;background:transparent;padding:9px 10px;cursor:pointer;font-size:14px;min-height:42px}.controls button:hover{border-color:var(--line)}.controls button[aria-pressed=true]{background:#dfd9cb}
+kbd{font:11px ui-monospace,monospace;border:1px solid #aaa496;border-radius:3px;padding:2px 4px;margin-right:5px}button.download{border:1px solid var(--ink);margin-left:8px;padding-inline:16px}button.download:hover{background:var(--ink);color:var(--paper)}
+.note{max-width:1256px;margin:0 auto;padding:0 32px 22px;font-size:12px;color:var(--muted)}.note a{color:inherit;text-underline-offset:3px}
+@keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.08)}}
+@keyframes wave{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-13px) rotate(-5deg)}65%{transform:translateY(-7px) rotate(4deg)}}
+@keyframes fly{0%,100%{transform:translateY(0)}30%,70%{transform:translateY(-35px) rotate(-4deg)}}
+@keyframes cape{from{transform:skewX(-3deg)}to{transform:skewX(3deg)}}
+@keyframes power{0%,100%{transform:scale(1)}40%{transform:scale(1.055) translateY(-8px)}}
+@keyframes assemble{0%{transform:translateY(15px) rotate(-6deg)}60%{transform:translateY(-5px) rotate(2deg)}100%{transform:none}}
+@media(min-width:601px) and (max-width:1000px){.gallery>figure:nth-last-child(2):nth-child(4n+1){grid-column:2}}
+@media(min-width:1500px){main{max-width:1440px}.gallery{column-gap:24px}}
+@media(max-width:1000px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}header p{max-width:250px;text-align:right}footer{margin-inline:24px;padding-inline:0}}
+@media(max-width:600px){header{padding:24px 22px 14px;display:block}h1{font-size:25px}header p{max-width:none;text-align:left;margin-top:9px;font-size:13px}main{padding:0 15px 24px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 10px}figcaption span{font-size:14px}footer{margin-inline:22px;gap:12px}.controls{gap:3px}.controls button{padding:9px 7px}button.download{margin-left:0}.selection{flex-basis:100%}.note{padding:0 22px 24px}.selected::after{right:6px}}
+@media(prefers-reduced-motion:reduce){.portrait .eyes,.wave .character,.fly .character,.fly .cape,.power .character,.assemble .character{animation:none}.portrait .head{transition:none}}
+/* A small vector Halloween visitor. The overlay never intercepts input. */
+.ghost-layer{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.ghost-flight{position:absolute;top:0;left:0;width:104px;height:126px;will-change:transform;transform:translate(calc(100vw - 128px),calc(100dvh - 175px));animation:ghost-roam 32s ease-in-out infinite}
+.ghost-art{display:block;width:100%;height:100%;overflow:visible;animation:ghost-bob 2.8s ease-in-out infinite;filter:drop-shadow(0 5px 2px #27272412)}
+.ghost-sparkles{animation:ghost-twinkle 2.2s ease-in-out infinite}
+.paused .ghost-flight,.paused .ghost-art,.paused .ghost-sparkles{animation-play-state:paused}
+@keyframes ghost-roam{
+  0%,100%{transform:translate(calc(100vw - 128px),calc(100dvh - 175px)) rotate(-8deg)}
+  25%{transform:translate(24px,calc(54dvh - 63px)) rotate(9deg)}
+  50%{transform:translate(calc(100vw - 140px),78px) rotate(-7deg)}
+  75%{transform:translate(35vw,calc(78dvh - 126px)) rotate(6deg)}
+}
+@keyframes ghost-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes ghost-twinkle{0%,100%{opacity:.4}50%{opacity:1}}
+@media(max-width:600px){.ghost-flight{width:78px;height:95px}}
+@media(prefers-reduced-motion:reduce){.ghost-flight,.ghost-art,.ghost-sparkles{animation:none}.ghost-flight{will-change:auto}}
+</style>
+</head>
+<body>
+<!-- Decorative SVG: outside the gallery so portrait exports stay independent. -->
+<div class="ghost-layer" id="halloween-ghost" aria-hidden="true">
+  <div class="ghost-flight">
+    <svg class="ghost-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 145" focusable="false">
+      <g stroke="#272724" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">
+        <g class="ghost-sparkles" stroke="#bd8440" fill="none">
+          <path d="M12 51v9m-4-4.5h8M106 29v8m-4-4h8"/>
+          <circle cx="15" cy="102" r="2" fill="#e8b65c" stroke="none"/>
+        </g>
+        <!-- Rounded head, tiny waving arms, and a scalloped sheet tail. -->
+        <path fill="#fffdf7" d="M31 73C18 60 12 65 18 77L27 90C23 109 24 119 21 128Q31 137 42 126Q51 142 62 128Q74 140 83 126Q94 134 100 123Q89 104 91 84L102 72Q110 60 100 61L88 70C87 43 76 35 59 35C40 35 29 50 31 73Z"/>
+        <path d="M31 99Q28 116 30 123M77 115q4 7 7 8" fill="none" stroke="#d8d9df" stroke-width="3"/>
+        <ellipse cx="47" cy="76" rx="4.7" ry="6.5" fill="#272724" stroke="none"/>
+        <ellipse cx="72" cy="76" rx="4.7" ry="6.5" fill="#272724" stroke="none"/>
+        <circle cx="48" cy="74" r="1.4" fill="white" stroke="none"/>
+        <circle cx="73" cy="74" r="1.4" fill="white" stroke="none"/>
+        <ellipse cx="37" cy="87" rx="7" ry="3.5" fill="#efb7aa" stroke="none"/>
+        <ellipse cx="82" cy="87" rx="7" ry="3.5" fill="#efb7aa" stroke="none"/>
+        <path d="M53 87Q60 96 66 87" fill="none"/>
+        <!-- A floppy plum witch hat with a warm orange band. -->
+        <path fill="#665577" d="M36 46L48 12Q61 9 75 22L62 21L77 47Z"/>
+        <path fill="#df9550" d="M38 38Q56 43 72 37L77 47L35 47Z"/>
+        <path fill="#665577" d="M24 47Q54 37 88 45Q97 48 88 53Q54 61 25 54Q17 51 24 47Z"/>
+        <rect x="52" y="40" width="9" height="7" rx="1" fill="#eac875" stroke-width="2"/>
+        <!-- Mini jack-o'-lantern candy pail. -->
+        <path d="M80 108Q77 94 88 95Q98 96 97 108" fill="none"/>
+        <path fill="#eaa153" d="M78 107Q87 103 99 108L98 123Q88 132 78 122Z"/>
+        <path d="M83 113l3 3h-5zm9 0l3 3h-5z" fill="#272724" stroke-width="1"/>
+        <path d="M83 121q5 4 10-1" fill="none" stroke-width="2"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<header><h1>Halloween wardrobe. <em>萬聖節換裝室</em></h1><p>你的臉，{{HERO_COUNT}} 套裝扮。拖曳轉頭，和小鬼一起搗蛋。</p></header>
+<main><div class="gallery" id="gallery" aria-label="Choose a Halloween costume"></div></main>
+<footer>
+<div class="selection" aria-live="polite"><strong id="selected-name">太空人 Astronaut</strong><p id="selected-line">今晚的任務：在月球找糖果。</p></div>
+<div class="controls" aria-label="Portrait controls">
+<button type="button" data-action="wave"><kbd>W</kbd>Wave</button>
+<button type="button" data-action="fly"><kbd>F</kbd>Fly</button>
+<button type="button" data-action="smile"><kbd>S</kbd>Smile</button>
+<button type="button" data-action="assemble"><kbd>A</kbd>Assemble</button>
+<button type="button" id="pause" aria-pressed="false">Pause motion</button>
+<button type="button" id="ghost-toggle" aria-label="Show Halloween ghost" aria-pressed="true" aria-controls="halloween-ghost">Ghost on</button>
+<button type="button" id="helmet-toggle" aria-label="Preview all headgear" aria-pressed="true">配件：全部戴上</button>
+<button type="button" class="download" id="download">Download SVG</button>
+</div>
+</footer>
+<p class="note">萬聖節換裝派對 · 點角色可下載 SVG。切換「配件：小鬼觸發」，小鬼靠近時才會變裝、露出驚訝臉。每張都是可編輯向量圖。</p>
+<script>
+const portraits = /* PORTRAITS_DATA */;
+const gallery = document.querySelector('#gallery');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let selected = 0, paused = reducedMotion.matches, previewHelmets = true;
+const timers = new WeakMap();
+const faces=[];
+const ghostLayer=document.querySelector('#halloween-ghost');
+const ghostArt=ghostLayer.querySelector('.ghost-art');
+let chatTime=0, smileUntil=0, smileTimer, frameId=0, lastFrame=null;
+const neutralMouth='M176 282 Q201 287 225 276';
+const smileMouth='M176 280 Q201 310 225 276';
+const surprisedMouth='M190 283 A11 15 0 1 0 212 283 A11 15 0 1 0 190 283 Z';
+const talkingMouth='M179 280 Q200 286 223 276 Q205 302 179 280 Z';
+
+function expression(face,kind){
+  if(face.expression===kind)return;
+  face.expression=kind;
+  face.figure.dataset.expression=kind;
+  face.figure.classList.toggle('surprised',kind==='surprised');
+  face.mouth.setAttribute('d',kind==='surprised'?surprisedMouth:kind==='talking'?talkingMouth:kind==='smile'?smileMouth:neutralMouth);
+  face.mouth.setAttribute('fill',kind==='surprised'||kind==='talking'?'#272724':'none');
+}
+function equip(face,on){
+  if(face.equipped===on)return;
+  face.equipped=on;
+  face.figure.classList.toggle('equipped',on);
+  face.figure.dataset.headgear=on?'on':'off';
+  face.neck.setAttribute('fill',on?face.neckColor:face.skinColor);
+  face.hideUnderGear.forEach(node=>node.setAttribute('opacity',on?'0':'1'));
+}
+// One smoothed affine pose drives both the skull and the neck attachment points.
+// The pivot is at the collar (200,350), instead of floating the head above it.
+function poseGeometry(pose){
+  const angle=pose.roll*Math.PI/180,scale=1-Math.abs(pose.yaw)*.065;
+  const a=Math.cos(angle)*scale,b=Math.sin(angle)*scale,c=-Math.sin(angle),d=Math.cos(angle);
+  const e=pose.tx+200-a*200-c*350,f=pose.ty+350-b*200-d*350;
+  const point=(x,y)=>[a*x+c*y+e,b*x+d*y+f];
+  const pair=([x,y])=>`${x.toFixed(3)} ${y.toFixed(3)}`;
+  const left=point(174,314),right=point(226,314);
+  // The lower endpoints and neckline remain fixed even at the maximum drag angle.
+  const neck=`M${pair(left)} Q${pair([left[0]-4,left[1]+23])} 155 359 Q200 387 245 359 Q${pair([right[0]+4,right[1]+23])} ${pair(right)} Z`;
+  const shadow=`M${pair(point(174,327))} Q${pair(point(200,342))} ${pair(point(226,327))} L${pair(point(231,346))} Q${pair(point(200,360))} ${pair(point(169,346))} Z`;
+  return {matrix:[a,b,c,d,e,f],neck,shadow};
+}
+function moveHead(face,target,dt,snap=false){
+  const blend=snap?1:1-Math.exp(-dt/240);
+  for(const key of ['tx','ty','roll','yaw'])face.pose[key]+=(target[key]-face.pose[key])*blend;
+  const geometry=poseGeometry(face.pose);
+  face.head.style.transform=`matrix(${geometry.matrix.join(',')})`;
+  face.neck.setAttribute('d',geometry.neck);
+  face.neckClip.setAttribute('d',geometry.neck);
+  face.neckShadow.setAttribute('d',geometry.shadow);
+}
+function stopConversation(){
+  cancelAnimationFrame(frameId);frameId=0;lastFrame=null;
+}
+function startConversation(){
+  if(!frameId&&!paused&&!reducedMotion.matches&&!document.hidden)frameId=requestAnimationFrame(converse);
+}
+function converse(now){
+  frameId=0;
+  if(paused||reducedMotion.matches||document.hidden){lastFrame=null;return;}
+  if(lastFrame!==null&&now-lastFrame<33){frameId=requestAnimationFrame(converse);return;}
+  const dt=lastFrame===null?0:Math.min(now-lastFrame,100);
+  lastFrame=now;chatTime+=dt;
+  // Read actual screen positions first, so reactions follow scrolling and responsive layouts.
+  const boxes=faces.map(face=>face.outline.getBoundingClientRect());
+  const ghost=ghostLayer.hidden?null:ghostArt.getBoundingClientRect();
+  const columns=Math.max(1,getComputedStyle(gallery).gridTemplateColumns.split(' ').length);
+  faces.forEach((face,i)=>{
+    const box=boxes[i],visible=box.bottom>0&&box.top<innerHeight&&box.right>0&&box.left<innerWidth;
+    if(!visible){face.scaredUntil=0;expression(face,'neutral');equip(face,previewHelmets);return;}
+    if(ghost){
+      const dx=(ghost.left+ghost.width/2)-(box.left+box.width/2);
+      const dy=(ghost.top+ghost.height/2)-(box.top+box.height*.59);
+      const near=Math.hypot(dx/(box.width*.62+ghost.width*.4),dy/(box.height*.44+ghost.height*.35))<1;
+      if(near)face.scaredUntil=chatTime+1100;
+    }
+    const scared=!!ghost&&chatTime<face.scaredUntil;
+    equip(face,previewHelmets||scared);
+    const column=i%columns,dir=column%2===0?1:-1;
+    const pair=Math.floor(i/columns)*Math.ceil(columns/2)+Math.floor(column/2);
+    const cycle=11.5+(pair%3)*.8;
+    const phase=(chatTime/1000+pair*1.9)%cycle;
+    // Partners take turns, then rest facing forward. Each turn takes several seconds.
+    const engagement=(1-Math.cos(phase/cycle*Math.PI*2))*.5;
+    const x=dir*engagement*.9;
+    const speaking=(dir===1&&phase>1&&phase<4.7)||(dir===-1&&phase>5&&phase<8.7);
+    const nod=speaking?Math.sin(chatTime/1000*1.8+pair)*.42:0;
+    const manual=now<face.manualUntil;
+    let target;
+    if(manual){
+      target={tx:face.manualX*11,ty:face.manualY*3,roll:face.manualX*6,yaw:face.manualX};
+    }else if(scared){
+      const toward=ghost.left+ghost.width/2>box.left+box.width/2?1:-1;
+      target={tx:toward*5,ty:-4,roll:toward*3,yaw:toward*.5};
+    }else{
+      target={tx:x*11,ty:nod*3,roll:x*5+nod,yaw:x};
+    }
+    moveHead(face,target,dt);
+    const talking=speaking&&!manual&&Math.sin(chatTime/1000*4.4+pair)>.1;
+    expression(face,scared?'surprised':now<smileUntil?'smile':talking?'talking':'neutral');
+  });
+  frameId=requestAnimationFrame(converse);
+}
+function animate(figure, action, delay=0) {
+  if (paused || reducedMotion.matches) return;
+  clearTimeout(timers.get(figure));
+  figure.classList.remove('wave','fly','power','assemble');
+  figure.querySelector('.character').style.animationDelay = delay+'ms';
+  void figure.offsetWidth;
+  figure.classList.add(action);
+  timers.set(figure,setTimeout(()=>figure.classList.remove(action),2100+delay));
+}
+function choose(index, play=true) {
+  selected=index;
+  gallery.querySelectorAll('figure').forEach((figure,i)=>{
+    figure.classList.toggle('selected',i===index);
+    figure.querySelector('button').setAttribute('aria-pressed',String(i===index));
+  });
+  document.querySelector('#selected-name').textContent=portraits[index].name;
+  document.querySelector('#selected-line').textContent=portraits[index].line;
+  if(play) animate(gallery.children[index],'power');
+}
+portraits.forEach((portrait,index)=>{
+  const figure=document.createElement('figure');
+  figure.style.setProperty('--delay',(-index*.41)+'s');
+  const button=document.createElement('button');button.type='button';button.className='portrait';
+  button.setAttribute('aria-label','Select '+portrait.name+' outfit');button.setAttribute('aria-pressed','false');
+  button.innerHTML=portrait.svg;
+  const caption=document.createElement('figcaption');const label=document.createElement('span');label.textContent=portrait.name;caption.append(label);
+  figure.append(button,caption);gallery.append(figure);
+  const head=button.querySelector('.head');
+  const gear=head.querySelector('.headgear');
+  const hideUnderGear=gear.dataset.hide.split(' ').filter(Boolean).map(name=>head.querySelector('.'+name)).filter(Boolean);
+  const face={figure,head,neck:button.querySelector('.neck-skin'),neckClip:button.querySelector('.neck-clip'),neckShadow:button.querySelector('.neck-shadow'),neckColor:portrait.neckColor,skinColor:portrait.skinColor,pose:{tx:0,ty:0,roll:0,yaw:0},outline:head.querySelector('.face'),hideUnderGear,equipped:null,mouth:button.querySelector('.mouth'),expression:null,scaredUntil:0,manualUntil:0,manualX:0,manualY:0};
+  button.title=portrait.headgearName;
+  equip(face,previewHelmets);
+  faces.push(face);
+  let drag=null, moved=false;
+  const turn=(x,y)=>{
+    if(paused||reducedMotion.matches) return;
+    face.manualX=x;face.manualY=y;face.manualUntil=drag?Infinity:performance.now()+1200;
+  };
+  button.addEventListener('pointerdown',e=>{
+    drag={x:e.clientX,y:e.clientY};moved=false;
+    if(!paused&&!reducedMotion.matches)face.manualUntil=Infinity;
+    button.setPointerCapture(e.pointerId);
+  });
+  button.addEventListener('pointermove',e=>{
+    const rect=button.getBoundingClientRect();
+    if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>5)moved=true;turn(Math.max(-1,Math.min(1,dx/70)),Math.max(-1,Math.min(1,dy/70)));}
+    else if(e.pointerType==='mouse') turn((e.clientX-rect.left)/rect.width*2-1,(e.clientY-rect.top)/rect.height*2-1);
+  });
+  button.addEventListener('pointerup',()=>{drag=null;face.manualUntil=performance.now()+900;});
+  button.addEventListener('pointercancel',()=>{drag=null;moved=true;face.manualUntil=0;});
+  button.addEventListener('lostpointercapture',()=>{drag=null;if(face.manualUntil===Infinity)face.manualUntil=performance.now()+900;});
+  button.addEventListener('pointerleave',()=>{if(!drag)face.manualUntil=performance.now()+450;});
+  button.addEventListener('click',e=>{if(!moved||e.detail===0) choose(index);moved=false;});
+});
+function action(kind){
+  if(kind==='smile'){
+    clearTimeout(smileTimer);
+    smileUntil=performance.now()+1800;
+    smileTimer=setTimeout(()=>faces.forEach(face=>{if(face.expression==='smile')expression(face,'neutral');}),1800);
+    faces.forEach(face=>{if(face.expression!=='surprised')expression(face,'smile');});
+  } else if(kind==='fly') animate(gallery.children[selected],'fly');
+  else {
+    [...gallery.children].forEach((f,i)=>animate(f,kind,i*65));
+  }
+}
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>action(button.dataset.action)));
+function updatePause(){
+  document.body.classList.toggle('paused',paused);
+  const button=document.querySelector('#pause');button.setAttribute('aria-pressed',String(paused));button.textContent=paused?'Resume motion':'Pause motion';
+  if(paused||reducedMotion.matches){
+    stopConversation();
+    faces.forEach(face=>{
+      clearTimeout(timers.get(face.figure));
+      face.figure.classList.remove('wave','fly','power','assemble');
+      face.manualUntil=0;
+      if(reducedMotion.matches){moveHead(face,{tx:0,ty:0,roll:0,yaw:0},0,true);face.scaredUntil=0;expression(face,'neutral');equip(face,previewHelmets);}
+    });
+  }else startConversation();
+}
+document.querySelector('#pause').addEventListener('click',()=>{paused=!paused;updatePause();});
+reducedMotion.addEventListener('change',()=>{paused=reducedMotion.matches;updatePause();});
+document.addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey||e.target.matches('input,textarea,select,[contenteditable]'))return;
+  const kind={w:'wave',f:'fly',s:'smile',a:'assemble'}[e.key.toLowerCase()];
+  if(kind){e.preventDefault();action(kind);}
+});
+document.querySelector('#download').addEventListener('click',()=>{
+  const portrait=portraits[selected],equipped=faces[selected].equipped;
+  const url=URL.createObjectURL(new Blob([equipped?portrait.helmetSvg:portrait.svg],{type:'image/svg+xml;charset=utf-8'}));
+  const a=document.createElement('a');a.href=url;a.download='my-'+portrait.key+(equipped?'-headgear':'')+'.svg';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+document.querySelector('#ghost-toggle').addEventListener('click',()=>{
+  const ghost=document.querySelector('#halloween-ghost');
+  ghost.hidden=!ghost.hidden;
+  const button=document.querySelector('#ghost-toggle');
+  button.setAttribute('aria-pressed',String(!ghost.hidden));
+  button.textContent=ghost.hidden?'Ghost off':'Ghost on';
+  if(ghost.hidden)faces.forEach(face=>{face.scaredUntil=0;equip(face,previewHelmets);if(face.expression==='surprised')expression(face,'neutral');});
+});
+document.querySelector('#helmet-toggle').addEventListener('click',()=>{
+  previewHelmets=!previewHelmets;
+  const button=document.querySelector('#helmet-toggle');
+  button.setAttribute('aria-pressed',String(previewHelmets));
+  button.textContent=previewHelmets?'配件：全部戴上':'配件：小鬼觸發';
+  faces.forEach(face=>equip(face,previewHelmets||(!ghostLayer.hidden&&face.expression==='surprised')));
+});
+document.addEventListener('visibilitychange',()=>{
+  document.body.classList.toggle('page-hidden',document.hidden);
+  if(document.hidden)stopConversation();else startConversation();
+});
+choose(0,false);updatePause();
+</script>
+</body>
+</html>
