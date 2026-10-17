@@ -1,6 +1,7 @@
 """Rebuild the standalone gallery and individual SVGs. Python standard library only."""
 from pathlib import Path
 import json
+from extras import COSTUMES, outfit as extra_outfit
 from headgear import headgear, HIDE, NAMES, NECK_COLORS
 import re
 import xml.etree.ElementTree as ET
@@ -23,7 +24,7 @@ HEROES = [
 ('frankenstein','科學怪人 Frankenstein','#68765c',None,'充完電，就可以出門搗蛋。'),
 ('skeleton','骷髏 Skeleton','#35383b',None,'骨感穿搭，甜食照吃。'),
 ('robot','機器人 Robot','#9aaeb1',None,'偵測到糖果。快樂值加一。'),
-]
+] + COSTUMES
 
 def outfit(key,suit,cape,equipped=False):
     back=''
@@ -72,6 +73,9 @@ def outfit(key,suit,cape,equipped=False):
         detail='<g stroke="#e9e3d4" stroke-width="9" fill="none"><path d="M200 377V486M179 388Q141 384 127 401Q145 418 183 408M221 388Q259 384 273 401Q255 418 217 408M181 423Q147 416 133 430Q153 448 185 442M219 423Q253 416 267 430Q247 448 215 442M183 456Q159 448 145 460Q163 475 186 474M217 456Q241 448 255 460Q237 475 214 474M94 410L81 467M306 410L319 467"/></g><circle cx="80" cy="475" r="8" fill="#e9e3d4"/><circle cx="320" cy="475" r="8" fill="#e9e3d4"/>'
     elif key=='robot':
         detail='<path fill="#697f85" d="M155 351Q200 375 245 351L249 378H151Z"/><rect x="125" y="397" width="150" height="85" rx="13" fill="#c9cebc"/><rect x="140" y="410" width="75" height="37" rx="4" fill="#536e70"/><path d="M148 435L159 435L167 420L178 440L188 425L204 425" stroke="#cbe0ae" fill="none"/><circle cx="242" cy="420" r="8" fill="#c7855c"/><circle cx="242" cy="445" r="8" fill="#cfb877"/><path d="M145 463H211M79 416L108 423M76 433L105 440M321 416L292 423M324 433L295 440" stroke="#556f75" fill="none" stroke-width="5"/>'
+    if key in {item[0] for item in COSTUMES}:
+        extra_back,detail=extra_outfit(key)
+        back+=extra_back
     body_path=re.search(r'd="([^"]+)"',torso)[1]
     clip=f'<defs><clipPath id="{key}-body-clip"><path d="{body_path}"/></clipPath></defs>'
     return back+neck+torso+clip+f'<g clip-path="url(#{key}-body-clip)">{detail}</g>'

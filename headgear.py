@@ -5,7 +5,13 @@ for key in ['chucky','mummy','wizard','pumpkin','pirate','frankenstein','robot']
 NAMES=dict(zip(HIDE,['太空頭盔','橘紅假髮與雀斑','尖牙','繃帶頭套','星月巫師帽','南瓜貝雷帽','海盜三角帽','平頂假髮與縫線','骷髏彩妝','天線頭盔']))
 NECK_COLORS={}
 
+from extras import HIDE as EXTRA_HIDE, NAMES as EXTRA_NAMES, gear as extra_gear
+HIDE.update(EXTRA_HIDE)
+NAMES.update(EXTRA_NAMES)
+
 def headgear(key):
+    if key in EXTRA_HIDE:
+        return extra_gear(key)
     if key=='astronaut':
         return '''<path fill="#e9e5d7" fill-rule="evenodd" d="M200 21C99 21 69 91 77 218Q79 304 151 342Q200 362 249 342Q321 304 323 218C331 91 301 21 200 21Z M200 46C119 46 95 106 99 210Q101 288 159 316Q200 337 241 316Q299 288 301 210C305 106 281 46 200 46Z"/><path d="M119 101Q145 62 188 61M111 116L107 132" stroke="#fffefa" stroke-width="9" fill="none"/><path d="M281 272L270 289" stroke="#9ebbc3" stroke-width="5" fill="none"/><rect x="67" y="171" width="32" height="69" rx="12" fill="#8ea6ac"/><rect x="301" y="171" width="32" height="69" rx="12" fill="#8ea6ac"/><circle cx="83" cy="205" r="8" fill="#d8c08d"/><circle cx="317" cy="205" r="8" fill="#d8c08d"/>'''
     if key=='chucky':

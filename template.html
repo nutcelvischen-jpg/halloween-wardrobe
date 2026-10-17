@@ -10,7 +10,7 @@
 ::selection{background:#d9b95c;color:var(--ink)}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
 header{max-width:1320px;margin:auto;padding:28px 32px 18px;display:flex;align-items:baseline;justify-content:space-between;gap:20px}
 h1{font-size:25px;font-weight:normal;letter-spacing:-.025em;margin:0}h1 em{color:var(--accent)}header p{margin:0;color:var(--muted);font-size:14px;font-style:italic}
-main{max-width:1320px;margin:auto;padding:0 24px 30px}.gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:12px;row-gap:25px}
+main{max-width:1320px;margin:auto;padding:0 24px 30px}.gallery{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:12px;row-gap:25px}
 figure{margin:0;position:relative;min-width:0}.portrait{display:block;width:100%;padding:0;background:none;border:0;cursor:grab;touch-action:pan-y;border-radius:0;position:relative}.portrait:active{cursor:grabbing}
 .portrait svg{width:100%;height:auto;display:block;overflow:visible;pointer-events:none}.portrait .head{transform-box:view-box;transform-origin:0 0}
 .portrait .eyes{transform-box:fill-box;transform-origin:center;animation:blink 6.3s infinite;animation-delay:var(--delay)}
@@ -63,6 +63,13 @@ kbd{font:11px ui-monospace,monospace;border:1px solid #aaa496;border-radius:3px;
 @keyframes ghost-twinkle{0%,100%{opacity:.4}50%{opacity:1}}
 @media(max-width:600px){.ghost-flight{width:78px;height:95px}}
 @media(prefers-reduced-motion:reduce){.ghost-flight,.ghost-art,.ghost-sparkles{animation:none}.ghost-flight{will-change:auto}}
+/* Small costume reactions share the existing ghost-proximity state. */
+.cat-ears,.bee-antennae{transform-origin:200px 130px}.talisman{transform-origin:200px 158px}.mushroom-cap{transform-origin:200px 155px}.bee-wings{transform-origin:200px 390px}.chef-peek{transform-origin:245px 90px}
+.surprised .cat-ears{animation:ear-alert .8s ease-in-out infinite alternate}.surprised .bee-antennae{animation:ear-alert 1s ease-in-out infinite alternate}.surprised .bee-wings{animation:wing-flutter .5s ease-in-out infinite alternate}
+.surprised .talisman{animation:paper-sway 1.2s ease-in-out infinite alternate}.surprised .mushroom-cap{animation:cap-bounce 1s ease-in-out infinite alternate}.surprised .magic-dust,.surprised .diver-bubbles{animation:dust-rise 2s ease-in-out infinite}.surprised .chef-peek{animation:chef-peek 1.5s ease-in-out infinite alternate}.surprised .lantern-light{animation:lantern-glow 1.4s ease-in-out infinite alternate}
+@keyframes ear-alert{to{transform:rotate(4deg) translateY(-3px)}}@keyframes wing-flutter{to{transform:scaleX(.88)}}@keyframes paper-sway{to{transform:rotate(8deg)}}@keyframes cap-bounce{to{transform:translateY(-6px) rotate(-2deg)}}@keyframes dust-rise{0%{transform:translateY(7px);opacity:.3}70%{opacity:1}100%{transform:translateY(-13px);opacity:.2}}@keyframes chef-peek{to{transform:translateY(-23px) rotate(6deg)}}@keyframes lantern-glow{to{fill:#fff4b9}}
+.paused .portrait *,.page-hidden .portrait *{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.surprised .portrait *{animation:none!important}}
 </style>
 </head>
 <body>
